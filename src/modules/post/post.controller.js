@@ -8,6 +8,8 @@ const { Types } = require("mongoose");
 const { removePropertyInObject } = require("../../common/utils/functions");
 const { getAddressDetail } = require("../../common/utils/http");
 const utf8 = require("utf8");
+const Post = require('../post/post.model');
+
 class PostController {
   #service;
   success_message;
@@ -123,6 +125,20 @@ class PostController {
       next(error);
     }
   }
+  // در فایل مربوط به routes یا controllers
+  async deleteAllPosts(req, res) {
+    try {
+      console.log('درخواست حذف پست‌ها دریافت شد');
+      const result = await Post.deleteMany({});
+      console.log('نتیجه حذف:', result);
+      res.status(200).json({ message: 'تمام پست‌ها با موفقیت حذف شدند' });
+    } catch (error) {
+      console.error('خطا در حذف پست‌ها:', error);
+      res.status(500).json({ message: 'خطا در حذف پست‌ها', error });
+    }
+  }
+  
+
   async showPost(req, res, next) {
     try {
       const { id } = req.params;

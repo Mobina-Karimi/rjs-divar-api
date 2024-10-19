@@ -92,5 +92,13 @@ class PostService {
 
     }
 
+    async update(postId, postData) {
+        if (!postId || !isValidObjectId(postId)) throw new createHttpError.BadRequest(PostMessage.RequestNotValid);
+        const updatedPost = await this.#model.findByIdAndUpdate(postId, postData, { new: true });
+        if (!updatedPost) throw new createHttpError.NotFound(PostMessage.NotFound);
+        return updatedPost;
+    }
+    
+
 }
 module.exports = new PostService();
